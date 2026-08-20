@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Coding Exam Solver"
+  short_description: "Guide weak coding models through exam tasks"
+  default_prompt: "Use $prompt-solving to analyze this AI Coding exam task and guide the coding model through implementation, testing, and correction."
