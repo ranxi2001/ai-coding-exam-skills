@@ -1,41 +1,68 @@
 # AI Coding Exam Skills
 
-Open-source skills for AI-assisted coding exams and project-based technical assessments.
+[![Validate Skills](https://github.com/ranxi2001/ai-coding-exam-skills/actions/workflows/validate.yml/badge.svg)](https://github.com/ranxi2001/ai-coding-exam-skills/actions/workflows/validate.yml)
+[![Release](https://img.shields.io/github/v/release/ranxi2001/ai-coding-exam-skills)](https://github.com/ranxi2001/ai-coding-exam-skills/releases)
+[![License](https://img.shields.io/github/license/ranxi2001/ai-coding-exam-skills)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/ranxi2001/ai-coding-exam-skills?style=flat)](https://github.com/ranxi2001/ai-coding-exam-skills/stargazers)
 
-面向 AI Coding 笔试的开源 Skills。帮助候选人从长需求中锁定验收契约，使用规范驱动开发拆解任务，并通过明确 Prompt、攻击性测试、最小修复和版本 checkpoint 驾驭能力较弱的考场模型。
+**面向 AI Coding 笔试和工程型技术评测的开源 Skills。**
 
-> 本项目仅适用于明确允许使用 AI 辅助工具的考试、训练和面试场景。
+[English README](README_EN.md) · [Latest Release](https://github.com/ranxi2001/ai-coding-exam-skills/releases/latest) · [Issues](https://github.com/ranxi2001/ai-coding-exam-skills/issues)
 
-## v0.1.0
+AI Coding Exam Skills 把一份长 README 变成可执行的工程交付流程：锁定契约，建立 SDD 规范，分解最小主链，指导能力较弱的 Coding 模型逐轮实现，用攻击性测试暴露问题，再以最小修复和回归测试收口。
 
-首个版本提供 `prompt-solving`：
+> 仅用于明确允许 AI 辅助的考试、训练和面试场景。本项目不提供任何公司的官方题库、隐藏用例或内部评分规则。
 
-- 从 README、题面或现有仓库提取环境、契约、规则和验收清单
-- 建立 `spec.md`、`design.md`、`tasks.md` 规范工件
-- 规划最小可运行纵向主链
-- 为能力较弱的 Coding 模型生成单轮、窄范围、可验证 Prompt
-- 主动识别模型擅自改名、扩大范围、破坏既有逻辑等错误
-- 让模型先写测试攻击当前实现，再根据完整失败输出做最小修复
-- 执行失败用例、边界用例和全量回归
-- 使用稳定 checkpoint、干净上下文和提交前契约审计控制风险
+## Why
 
-暂不包含模拟笔试项目、自动评分器或强模型 Judge。这些能力计划在后续版本单独设计。
+AI Coding 笔试考察的不只是“能否生成代码”，还包括：
 
-## 工作流
+- 从需求文档提取精确验收标准
+- 在时间限制内做出合理的范围取舍
+- 让模型遵守字段、状态、接口和错误契约
+- 设计能攻击当前实现的边界测试
+- 根据真实失败日志进行小范围修复和回归
+- 保留稳定版本，并能解释自己的工程决策
+
+## What's Included
+
+### `prompt-solving`
+
+当前唯一发布的 Skill，支持三种工作模式：
+
+| Mode | 适用场景 |
+| --- | --- |
+| **Direct** | 能直接访问题目仓库，由 Agent 分析、修改和验证代码 |
+| **Relay** | 候选人在另一个窗口操作弱模型，每轮获得一个可复制 Prompt |
+| **Analysis** | 只蒸馏题目、解法、失败模式、测试和 Prompt，不修改代码 |
+
+内置参考覆盖：
+
+- 多端状态机与订单系统
+- 网页数据清洗管线
+- LLM 批量推理控制台
+- 异构 Excel 账单解析
+- 内存态治理、预算与幂等服务
+- 安全漏洞审计与最小修复
+
+## Core Workflow
 
 ```text
-阅读题面
-  -> 锁定精确契约
-  -> 建立 SDD 规范
-  -> 拆分可验收功能块
-  -> 跑通最小主链
-  -> 生成攻击性测试
-  -> 最小修复并回归
-  -> 保存稳定 checkpoint
-  -> 提交前逐项验收
+Read the task
+    -> Lock the exact contract
+    -> Create SDD artifacts
+    -> Plan a minimal vertical slice
+    -> Implement one verifiable block
+    -> Generate adversarial tests
+    -> Apply the smallest valid fix
+    -> Run regression checks
+    -> Save a stable checkpoint
+    -> Audit the final delivery
 ```
 
-## 安装
+核心原则：**规范先行、一次一件事、测试与实现分离、证据优先、可回滚交付。**
+
+## Quick Start
 
 ```bash
 git clone https://github.com/ranxi2001/ai-coding-exam-skills.git
@@ -56,7 +83,9 @@ cp -R skills/prompt-solving ~/.claude/skills/prompt-solving
 
 也可以将 `skills/prompt-solving` 放入对应工具支持的项目级 Skill 目录。
 
-## 使用
+## Use It
+
+显式调用：
 
 ```text
 Use $prompt-solving to analyze this AI Coding exam task and guide the coding model through implementation, testing, and correction.
@@ -68,24 +97,19 @@ Use $prompt-solving to analyze this AI Coding exam task and guide the coding mod
 使用 $prompt-solving 阅读当前 README，先不要写代码。提取硬约束、验收标准和隐藏测试风险，再给我第一轮可以发给考场模型的 Prompt。
 ```
 
-Skill 支持三种模式：
+Relay 模式下，每一轮都会保持如下结构，方便直接复制到考场模型：
 
-- **Direct**：能够访问仓库时直接分析、修改和验证
-- **Relay**：候选人在另一个窗口操作弱模型，Skill 每轮提供一个可复制 Prompt
-- **Analysis**：只蒸馏题目、解法、失败模式、Prompt 和测试，不修改代码
+```text
+Current phase:
+Observed evidence:
+Likely mistake or risk:
+Prompt to send next:
+[one copy-ready prompt]
+Expected proof:
+Rollback condition:
+```
 
-## 第一批题型
-
-- 多端状态机与订单系统
-- 网页数据清洗管线
-- LLM 批量推理控制台
-- 异构 Excel 账单解析
-- 内存态治理、预算与幂等服务
-- 安全漏洞审计与最小修复
-
-这些内容是可迁移的训练模式，不是任何公司的官方题库或标准答案。实际字段、路由、状态码和边界始终以当场题面为准。
-
-## 项目结构
+## Repository Map
 
 ```text
 ai-coding-exam-skills/
@@ -94,23 +118,35 @@ ai-coding-exam-skills/
 │       ├── SKILL.md
 │       ├── agents/openai.yaml
 │       └── references/
-├── references/              # 研究材料与来源记录
-├── scripts/                 # 仓库校验工具
-└── .github/workflows/       # 持续校验
+├── references/              # Research notes and source records
+├── scripts/                 # Local repository checks
+└── .github/workflows/       # CI validation
 ```
 
-## 验证
+## Validate Locally
 
 ```bash
 python -m pip install -r requirements-dev.txt
 python scripts/validate_skills.py
 ```
 
-## 贡献
+CI also runs the official Skill validator and the repository reference checks on every push and pull request.
 
-欢迎提交新的公开题型、失败案例、Prompt 模板和测试策略。请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)，不得提交保密题面、个人信息或违反考试规则获得的材料。
+## Roadmap
+
+- [x] `prompt-solving` v0.1.0
+- [ ] More distilled engineering question patterns
+- [ ] Reusable task-spec and test-case templates
+- [ ] `mock-coding-exam` project for local practice
+- [ ] Optional strong-model Judge and trajectory scoring
+
+模拟笔试项目和 Judge 不属于当前版本，避免在解题 Skill 尚未稳定前过早引入执行环境和评分复杂度。
+
+## Contributing
+
+欢迎提交公开题型、低能力模型失败案例、Prompt 模板、边界测试和文档改进。请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)：不要提交保密题面、隐藏答案、个人信息、Token 或密钥，也不要把个人复盘表述为企业官方规则。
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) © 2026 ranxi2001
 
